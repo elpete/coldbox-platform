@@ -18,7 +18,7 @@ component accessors="true"{
 	/**
 	 * Constructor
 	 *
-	 * @CFCConfig The logBox Data Configuration CFC
+	 * @CFCConfig The logBox Data Configuration CFC or struct
 	 * @CFCConfigPath The logBox Data Configuration CFC path to use
 	 */
 	function init( any CFCConfig, string CFCConfigPath ){
@@ -26,6 +26,10 @@ component accessors="true"{
 		if( structKeyExists( arguments, "CFCConfigPath" ) ){
 			arguments.CFCConfig = createObject( "component", arguments.CFCConfigPath );
 		}
+
+        if ( isStruct( arguments.CFCConfig ) && !isObject( arguments.CFCConfig ) ) {
+            loadDataDSL( arguments.CFCConfig );
+        }
 
 		// Test and load via Data CFC
 		if( structKeyExists( arguments, "CFCConfig") and isObject( arguments.CFCConfig ) ){
