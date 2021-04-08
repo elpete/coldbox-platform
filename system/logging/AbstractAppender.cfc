@@ -80,15 +80,15 @@ component accessors="true"{
 	 * @name The unique name for this appender.
 	 * @properties A map of configuration properties for the appender"
 	 * @layout The layout class to use in this appender for custom message rendering.
-	 * @levelMin The default log level for this appender, by default it is 0. Optional. ex: LogBox.logLevels.WARN
-	 * @levelMax The default log level for this appender, by default it is 5. Optional. ex: LogBox.logLevels.WARN
+	 * @levelMin The default log level for this appender, by default it is 0 (FATAL). Optional. ex: LogBox.logLevels.WARN
+	 * @levelMax The default log level for this appender, by default it is 4 (DEBUG). Optional. ex: LogBox.logLevels.WARN
 	 */
 	function init(
 		required name,
 		struct properties={},
 		layout="",
-		levelMin=0,
-		levelMax=4
+		levelMin=this.logLevels.FATAL,
+		levelMax=this.logLevels.DEBUG
 	){
 		// Appender Unique ID */
 		variables._hash        = createObject( 'java', 'java.lang.System' ).identityHashCode( this );
@@ -147,7 +147,7 @@ component accessors="true"{
 		} else {
 			throw(
 				message = "Invalid Log Level",
-				detail  = "The log level #arguments.levelMin# is invalid or greater than the levelMax (#getLevelMax()#). Valid log levels are from 0 to 5",
+				detail  = "The log level #arguments.levelMin# is invalid or greater than the levelMax (#getLevelMax()#). Valid log levels are from 0 (FATAL) to 4 (DEBUG)",
 				type    = "AbstractAppender.InvalidLogLevelException"
 			);
 		}
@@ -166,7 +166,7 @@ component accessors="true"{
 		} else {
 			throw(
 				message = "Invalid Log Level",
-				detail  = "The log level #arguments.levelMax# is invalid or less than the levelMin (#getLevelMin()#). Valid log levels are from 0 to 5",
+				detail  = "The log level #arguments.levelMax# is invalid or less than the levelMin (#getLevelMin()#). Valid log levels are from 0 (FATAL) to 4 (DEBUG)",
 				type    = "AbstractAppender.InvalidLogLevelException"
 			);
 		}
