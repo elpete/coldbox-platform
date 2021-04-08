@@ -79,7 +79,26 @@ component{
 	 *
 	 * @level numeric level
 	 */
-	function isLevelValid( required level ){
-		return ( arguments.level gte this.MINLEVEL AND arguments.level lte this.MAXLEVEL );
+	public boolean function isLevelValid(
+        required numeric level,
+        numeric min = this.MINLEVEL,
+        numeric max = this.MAXLEVEL
+    ) {
+		return ( arguments.level >= arguments.min && arguments.level <= arguments.max );
 	}
+
+    public numeric function validateLevel(
+        required numeric level,
+        numeric min = this.MINLEVEL,
+        numeric max = this.MAXLEVEL
+    ) {
+        if ( !isLevelValid( arguments.level ) ) {
+            throw(
+				message = "Invalid Log Level",
+				detail  = "The log level [#arguments.level#] is invalid. Valid log levels are from #arguments.min# (#lookup(arguments.min)#) to #arguments.max# (#lookup(arguments.max)#)",
+				type    = "AbstractAppender.InvalidLogLevelException" // type is `AbstractAppender` for backwards compatibility
+			);
+        }
+        return arguments.level;
+    }
 }

@@ -140,17 +140,12 @@ component accessors="true"{
 	 * @throws AbstractAppender.InvalidLogLevelException
 	 */
 	AbstractAppender function setLevelMin( required levelMin ){
-		// Verify level
-		if( this.logLevels.isLevelValid( arguments.levelMin ) AND arguments.levelMin lte getLevelMax() ){
-			variables.levelMin = arguments.levelMin;
-			return this;
-		} else {
-			throw(
-				message = "Invalid Log Level",
-				detail  = "The log level #arguments.levelMin# is invalid or greater than the levelMax (#getLevelMax()#). Valid log levels are from 0 (FATAL) to 4 (DEBUG)",
-				type    = "AbstractAppender.InvalidLogLevelException"
-			);
-		}
+        variables.levelMin = this.logLevels.validateLevel(
+            target = arguments.levelMin,
+            min = getLevelMin(),
+            max = getLevelMax()
+        );
+        return this;
 	}
 
 	/**
@@ -159,17 +154,12 @@ component accessors="true"{
 	 * @throws AbstractAppender.InvalidLogLevelException
 	 */
 	AbstractAppender function setLevelMax( required levelMax ){
-		// Verify level
-		if( this.logLevels.isLevelValid( arguments.levelMax ) AND arguments.levelMax gte getLevelMin() ){
-			variables.levelMax = arguments.levelMax;
-			return this;
-		} else {
-			throw(
-				message = "Invalid Log Level",
-				detail  = "The log level #arguments.levelMax# is invalid or less than the levelMin (#getLevelMin()#). Valid log levels are from 0 (FATAL) to 4 (DEBUG)",
-				type    = "AbstractAppender.InvalidLogLevelException"
-			);
-		}
+		variables.levelMax = this.logLevels.validateLevel(
+            target = arguments.levelMax,
+            min = getLevelMin(),
+            max = getLevelMax()
+        );
+        return this;
 	}
 
 	/**
