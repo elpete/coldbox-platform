@@ -379,8 +379,7 @@ component accessors="true"{
 	 * @appenders The list of appenders to get
 	 */
 	struct function getAppendersMap( required appenders ){
-		var results = arguments.appenders
-			.listToArray()
+		var results = arrayWrap( arguments.appenders )
 			.reduce( function( result, item, index ){
 				var target = {};
 				if( !isNull( arguments.result ) ){
@@ -399,5 +398,17 @@ component accessors="true"{
 	private function getUtil(){
 		return new coldbox.system.core.util.Util();
 	}
+
+    private array function arrayWrap( required any items ) {
+        if ( isArray( arguments.items ) ) {
+            return arguments.items;
+        }
+
+        if ( isValid( "String", arguments.items ) ) {
+            return arraySlice( arguments.items.split( ",\s*" ), 1 );
+        }
+
+        return [ arguments.items ];
+    }
 
 }
